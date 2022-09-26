@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/25 21:29:53 by mariacarazo       #+#    #+#             */
-/*   Updated: 2022/09/26 16:31:19 by mcarazo-         ###   ########.fr       */
+/*   Created: 2022/09/13 18:37:47 by mcarazo-          #+#    #+#             */
+/*   Updated: 2022/09/19 17:22:21 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int nb, int fd)
+void	*ft_memmove(void *dst, const void *src, size_t n)
 {
-	char	j;
-
-	if (nb == -2147483648)
-		write (fd, "-2147483648", 11);
-	else if (nb < 0)
+	if (src < dst)
 	{
-		write (fd, "-", 1);
-		ft_putnbr_fd(-nb, fd);
+		while (n-- > 0)
+			((unsigned char *)dst)[n] = ((unsigned char *)src)[n];
+		return (dst);
 	}
 	else
-	{
-		if (nb / 10 != 0)
-			ft_putnbr_fd(nb / 10, fd);
-		j = nb % 10 + 48;
-		write (fd, &j, 1);
-	}
+		dst = ft_memcpy(dst, src, n);
+	return (dst);
 }

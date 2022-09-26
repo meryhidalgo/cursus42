@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/25 21:29:53 by mariacarazo       #+#    #+#             */
-/*   Updated: 2022/09/26 16:31:19 by mcarazo-         ###   ########.fr       */
+/*   Created: 2022/08/23 09:15:50 by mcarazo-          #+#    #+#             */
+/*   Updated: 2022/09/21 18:23:36 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int nb, int fd)
+int	ft_atoi(const char *str)
 {
-	char	j;
+	int	i;
+	int	neg;
+	int	sol;
 
-	if (nb == -2147483648)
-		write (fd, "-2147483648", 11);
-	else if (nb < 0)
+	i = 0;
+	neg = 1;
+	sol = 0;
+	while ((str[i] > 8 && str[i] < 14) || str[i] == 32)
+		i++;
+	if (str[i] == 43 || str[i] == 45)
 	{
-		write (fd, "-", 1);
-		ft_putnbr_fd(-nb, fd);
+		if (str[i] == 45)
+			neg = neg * -1;
+		i++;
 	}
-	else
+	while (str[i] > 47 && str[i] < 58)
 	{
-		if (nb / 10 != 0)
-			ft_putnbr_fd(nb / 10, fd);
-		j = nb % 10 + 48;
-		write (fd, &j, 1);
+		sol = sol * 10 + (str[i] - 48);
+		i++;
 	}
+	return (sol * neg);
 }

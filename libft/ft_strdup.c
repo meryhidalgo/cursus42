@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/25 21:29:53 by mariacarazo       #+#    #+#             */
-/*   Updated: 2022/09/26 16:31:19 by mcarazo-         ###   ########.fr       */
+/*   Created: 2022/09/21 17:40:14 by mcarazo-          #+#    #+#             */
+/*   Updated: 2022/09/24 16:21:19 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int nb, int fd)
+char	*ft_strdup(const char *s1)
 {
-	char	j;
+	size_t	i;
+	char	*s2;
 
-	if (nb == -2147483648)
-		write (fd, "-2147483648", 11);
-	else if (nb < 0)
+	i = 0;
+	s2 = (char *)malloc(ft_strlen(s1) + 1);
+	if (s2 == 0)
+		return (NULL);
+	while (i < ft_strlen(s1))
 	{
-		write (fd, "-", 1);
-		ft_putnbr_fd(-nb, fd);
+		s2[i] = s1[i];
+		i++;
 	}
-	else
-	{
-		if (nb / 10 != 0)
-			ft_putnbr_fd(nb / 10, fd);
-		j = nb % 10 + 48;
-		write (fd, &j, 1);
-	}
+	s2[i] = 0;
+	return (s2);
 }

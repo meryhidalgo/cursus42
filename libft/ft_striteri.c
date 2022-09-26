@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariacarazohidalgo <mariacarazohidalgo@    +#+  +:+       +#+        */
+/*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 21:22:29 by mariacarazo       #+#    #+#             */
-/*   Updated: 2022/09/25 21:24:02 by mariacarazo      ###   ########.fr       */
+/*   Updated: 2022/09/26 16:21:08 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//include
+#include "libft.h"
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
 	int		i;
 
 	i = 0;
-	//puntero s vacio?
+	if (s == 0)
+		return ;
 	while (s[i] != 0)
 	{
 		f(i, &s[i]);
