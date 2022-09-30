@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 19:03:10 by mcarazo-          #+#    #+#             */
-/*   Updated: 2022/09/26 16:20:20 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/09/30 16:52:07 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ char	*fill_word(char const *s, int j)
 
 	k = 0;
 	str = (char *)malloc(sizeof(char) * j + 1);
-	if (str == 0)
+	if (str == NULL)
 	{
 		free(str);
-		return (0);
+		return (NULL);
 	}
 	while (k < j)
 	{
