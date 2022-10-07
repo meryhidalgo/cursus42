@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:40:46 by mcarazo-          #+#    #+#             */
-/*   Updated: 2022/09/26 19:48:53 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/09/30 16:53:11 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_list	*ft_lstnew(void *content)
 {
 	t_list	*newlist;
 
-	newlist = malloc(sizeof(t_list));
-	if (newlist == 0)
+	newlist = (t_list *)malloc(sizeof(t_list));
+	if (!newlist)
 		return (NULL);
 	newlist->content = content;
 	newlist->next = NULL;

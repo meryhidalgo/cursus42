@@ -6,7 +6,7 @@
 #    By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:40:16 by mcarazo-          #+#    #+#              #
-#    Updated: 2022/09/30 17:01:16 by mcarazo-         ###   ########.fr        #
+#    Updated: 2022/10/07 14:37:02 by mcarazo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,8 @@ SRCS	= ft_isalpha.c ft_isdigit.c  ft_isalnum.c ft_isascii.c ft_isprint.c ft_toup
 
 OBJS	= ${SRCS:.c=.o}
 
-BONUS_SRCS	= ft_lstadd_front.c ft_lstnew.c ft_lstsize.c ft_lstlast.c ft_lstclear.c \
-		ft_lstadd_back.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c
+BONUS_SRCS	= ft_lstadd_front_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c ft_lstclear_bonus.c \
+		ft_lstadd_back_bonus.c ft_lstdelone_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
 
 BONUS_OBJS	= ${BONUS_SRCS:.c=.o}
 NAME	= libft.a

@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:54:30 by mcarazo-          #+#    #+#             */
-/*   Updated: 2022/09/29 17:33:57 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/09/30 16:48:53 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
 	t_list	*aux;
 
+	if (!lst || !del)
+		return ;
 	while ((*lst) != NULL)
 	{
 		aux = (*lst)->next;

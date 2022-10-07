@@ -6,13 +6,13 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 19:03:10 by mcarazo-          #+#    #+#             */
-/*   Updated: 2022/09/30 16:52:07 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/10/07 17:46:25 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	countwords(char const *s, char c)
+static int	countwords(char const *s, char c)
 {
 	int	i;
 	int	d;
@@ -34,52 +34,55 @@ int	countwords(char const *s, char c)
 	return (total + 1);
 }
 
-char	*fill_word(char const *s, int j)
+static char	*fill_word(char const *s, char **sol, int j, int i)
 {
 	int		k;
-	char	*str;
 
 	k = 0;
-	str = (char *)malloc(sizeof(char) * j + 1);
-	if (str == NULL)
+	sol[i] = (char *)malloc(sizeof(char) * (j + 1));
+	if (sol[i] == NULL)
 	{
-		free(str);
+		while (i >= 0)
+		{
+			free(sol[i]);
+			i--;
+		}
+		free(sol);
 		return (NULL);
 	}
 	while (k < j)
 	{
-		str[k] = s[k];
+		sol[i][k] = s[k];
 		k++;
 	}
-	str[k] = 0;
-	return (str);
+	sol[i][k] = 0;
+	return (sol[i]);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**sol;
-	int		i[2];
+	int		i;
+	int		j;
 
-	i[0] = 0;
-	if (s == 0)
+	i = 0;
+	if (!s)
 		return (NULL);
 	sol = (char **)malloc(sizeof(char *) * (countwords(s, c) + 1));
-	if (sol == 0)
-	{
-		free(sol);
+	if (!sol)
 		return (NULL);
-	}
 	while (*s != 0)
 	{
-		i[1] = 0;
+		j = 0;
 		while (*s == c)
 			s++;
-		while (s[i[1]] != c && s[i[1]] != 0)
-			i[1]++;
+		while (s[j] != c && s[j] != 0)
+			j++;
 		if (*s != 0)
-			sol[i[0]++] = fill_word(s, i[1]);
-		s = s + i[1];
+			if (!fill_word(s, sol, j, i++))
+				return (NULL);
+		s = s + j;
 	}
-	sol[i[0]] = 0;
+	sol[i] = 0;
 	return (sol);
 }

@@ -6,13 +6,13 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 17:10:26 by mcarazo-          #+#    #+#             */
-/*   Updated: 2022/09/26 16:14:30 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/10/07 17:13:36 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_char_in_set(char c, char const *set)
+static int	ft_char_in_set(char c, char const *set)
 {
 	size_t	i;
 

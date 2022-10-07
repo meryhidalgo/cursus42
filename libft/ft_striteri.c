@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 21:22:29 by mariacarazo       #+#    #+#             */
-/*   Updated: 2022/09/26 16:21:08 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:55:02 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (s == 0)

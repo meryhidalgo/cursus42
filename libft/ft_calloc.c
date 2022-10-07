@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:48:26 by mcarazo-          #+#    #+#             */
-/*   Updated: 2022/09/30 17:14:34 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/10/07 16:42:32 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	void	*space;
 
-	printf("%lu\n", size * count);
-	printf("%lu\n", size);
 	if (size < 0 || count < 0 || (size == SIZE_MAX && count == SIZE_MAX))
 		return (NULL);
 	space = malloc(size * count);
