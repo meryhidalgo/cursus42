@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mariacarazohidalgo <mariacarazohidalgo@    +#+  +:+       +#+        */
+/*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:15:51 by mariacarazo       #+#    #+#             */
-/*   Updated: 2022/11/15 14:16:31 by mariacarazo      ###   ########.fr       */
+/*   Updated: 2022/12/01 17:34:16 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "get_next_line.h"
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	length;
+
+	length = 0;
+	while (str[length] != 0)
+		length++;
+	return (length);
+}
 
 size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
 {
@@ -30,4 +40,48 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
 		i++;
 	}
 	return (length);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	size_t	i;
+	char	*s2;
+
+	i = 0;
+	s2 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (s2 == 0)
+		return (NULL);
+	while (i < ft_strlen(s1))
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = 0;
+	//free((void *)s1);
+	return (s2);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*join;
+	int		i;
+	int		j;
+
+	if (s1 == 0 || s2 == 0)
+		return (NULL);
+	join = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (join == 0)
+		return (NULL);
+	i = ft_strlen(s1);
+	j = 0;
+	ft_strlcpy(join, s1, ft_strlen(s1) + 1);
+	while (s2 [j] != '\n' && s2[j] != 0)
+	{
+		join[i] = s2[j];
+		i++;
+		j++;
+	}
+	join[i] = 0;
+	free(s1);
+	return (join);
 }
