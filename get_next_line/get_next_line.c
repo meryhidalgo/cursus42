@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 12:04:17 by mariacarazo       #+#    #+#             */
-/*   Updated: 2022/12/01 17:32:39 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:40:03 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	check_line(char *buffer)
 	int	i;
 
 	i = 0;
+	if (!buffer[i])
+		return (-1);
 	while (buffer[i] && i < BUFFER_SIZE)
 	{
 		if (buffer[i] == '\n' || buffer[i] == '\0')
@@ -43,7 +45,6 @@ char	*join_buffer_line(int fd, char *buffer, char *line, char **remainder)
 		line = ft_strjoin(line, buffer);
 	else
 		line = ft_strjoin(line, buffer);
-	line[ft_strlen(line)] = '\n';
 	*remainder = ft_strdup(&buffer[check_line(buffer) + 1]);
 	free(buffer);
 	return (line);
@@ -52,36 +53,54 @@ char	*join_buffer_line(int fd, char *buffer, char *line, char **remainder)
 char	*get_next_line(int fd)
 {
 	char		*line;
+	char		*aux;
 	char		*buffer;
 	static char	*remainder;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (remainder)
+	{
+		line = ft_strdup(remainder);
+		if (check_line(remainder) < (int)ft_strlen(remainder))
+		{
+			line[check_line(remainder)] = '\n';
+			line[check_line(remainder) + 1] = 0;
+			aux = ft_strdup(&remainder[check_line(remainder) + 1]);
+			free (remainder);
+			remainder = aux;
+			return (line);
+		}
+		free(remainder);
+	}
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	read(fd, buffer, BUFFER_SIZE);
 	buffer[BUFFER_SIZE] = 0;
-	if (check_line(buffer) == 0)
+	if (check_line(buffer) < 0)
 	{
 		free(buffer);
 		return (NULL);
 	}
-	if (remainder)
-		line = ft_strdup(remainder);
-	else
-		line = (char *)malloc(sizeof(char) * check_line(buffer) + 1);
+	if (!remainder)
+		line = (char *)malloc(sizeof(char) * check_line(buffer) + 2);
 	return (join_buffer_line(fd, buffer, line, &remainder));
 }
 
-/*int	main()
+int	main()
 {
 	int	fd;
+	char	*c;
 	int	i;
 
 	i = 1;
 	fd = open("test.txt", O_RDONLY);
-	while (i < 5)
+	while (i < 7)
 	{
-		printf("%s", get_next_line(fd));
+		c = get_next_line(fd);
+		printf("string %s", c);
+		free(c);
 		i++;
 	}
-}*/
+	close(fd);
+	system("leaks -q a.out");
+}

@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 19:31:59 by mcarazo-          #+#    #+#             */
-/*   Updated: 2022/11/29 17:42:06 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:00:40 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@
 # include <fcntl.h>
 
 char	*get_next_line(int fd);
+int		check_line(char *buffer);
 char	*ft_strjoin(char *s1, char *s2);
 size_t	ft_strlen(const char *str);
-char	*ft_strdup(const char *s1);
+char	*ft_strdup(char *s1);
 
 #endif
