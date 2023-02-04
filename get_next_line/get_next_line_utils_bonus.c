@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:15:51 by mariacarazo       #+#    #+#             */
-/*   Updated: 2023/02/04 11:08:46 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/01/24 11:13:08 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *str)
 {
@@ -28,7 +28,7 @@ char	*ft_strdup(char *s1)
 	char	*s2;
 
 	i = 0;
-	s2 = (char *)ft_calloc((ft_strlen(s1) + 1), sizeof(char));
+	s2 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (s2 == 0 || s1 == 0)
 		return (NULL);
 	while (i < ft_strlen(s1))
@@ -73,11 +73,15 @@ void	ft_bzero(void *s, size_t n)
 	if (n == 0)
 		return ;
 	while (i < n)
-		((unsigned char *)s)[i++] = '\0';
+	{
+		((unsigned char *)s)[i] = '\0';
+		i++;
+	}
 }
 
 void	*ft_calloc(size_t count, size_t size)
 {
+	size_t	i;
 	void	*space;
 
 	if (size < 0 || count < 0 || (count != 0 && (SIZE_MAX / count) < size))
@@ -85,6 +89,8 @@ void	*ft_calloc(size_t count, size_t size)
 	space = malloc(size * count);
 	if (space == 0)
 		return (NULL);
-	ft_bzero(space, size * count);
+	i = 0;
+	while (i < (size * count))
+		((unsigned char *)space)[i++] = '\0';
 	return (space);
 }

@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 12:04:17 by mariacarazo       #+#    #+#             */
-/*   Updated: 2023/02/02 19:48:47 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/02/02 20:17:02 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-int	check(char *c)
+int	errores(char *check)
 {
-	if (!c[0])
+	if (!check[0])
 	{
-		free(c);
+		free(check);
 		return (-1);
 	}
 	return (1);
@@ -50,7 +50,7 @@ char	*read_line(int fd, char *line, char **remainder)
 		free(buffer);
 		return (NULL);
 	}
-	if (check(buffer) < 0)
+	if (errores(buffer) < 0)
 		return (line);
 	x = check_line(buffer);
 	if (!line)
@@ -66,13 +66,13 @@ char	*read_line(int fd, char *line, char **remainder)
 			free(buffer);
 			return (NULL);
 		}
-		if (check(buffer) < 0)
+		if (errores(buffer) < 0)
 			return (line);
 		x = check_line(buffer);
 	}
 	line = ft_strjoin(line, buffer);
 	if (x != (BUFFER_SIZE - 1))
-		*remainder = ft_strdup(&buffer[x + 1]);
+		remainder[fd] = ft_strdup(&buffer[x + 1]);
 	free(buffer);
 	return (line);
 }
@@ -82,52 +82,64 @@ char	*get_next_line(int fd)
 	int			x;
 	char		*line;
 	char		*aux;
-	static char	*remainder;
+	static char	*remainder[OPEN_MAX];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (remainder)
+	if (remainder[fd])
 	{
-		if (check(remainder) < 0)
+		if (errores(remainder[fd]) < 0)
 			return (NULL);
-		line = ft_strdup(remainder);
-		x = check_line(remainder);
-		if (x < (int)ft_strlen(remainder))
+		line = ft_strdup(remainder[fd]);
+		x = check_line(remainder[fd]);
+		if (x < (int)ft_strlen(remainder[fd]))
 		{
 			line[x + 1] = 0;
-			aux = ft_strdup(&remainder[x + 1]);
-			free(remainder);
-			remainder = aux;
+			aux = ft_strdup(&(remainder[fd][x + 1]));
+			free(remainder[fd]);
+			remainder[fd] = aux;
 			return (line);
 		}
-		free(remainder);
-		remainder = NULL;
+		free(remainder[fd]);
+		remainder[fd] = NULL;
 	}
 	else
 		line = NULL;
-	return (read_line(fd, line, &remainder));
-}
-
-void	leaks()
-{
-	system("leaks -q a.out\n");
+	return (read_line(fd, line, remainder));
 }
 
 /*int	main(int argc, char **argv)
 {
-	int	fd;
-	char	*c = "A";
+	int	fd[4];
+	char	*c;
 
-	atexit(leaks);
-	fd = open(argv[1], O_RDONLY);
-	//fd = open("42_no_nl", O_RDONLY);
-	while (c)
-	{
-		c = get_next_line(fd);
-		printf("%s", c);
-		free(c);
-	}
-	close(fd);
-	argc++;
-	//system("leaks -q a.out");
+	fd[1] = open(argv[1], O_RDONLY);
+	fd[2] = open(argv[2], O_RDONLY);
+	c = get_next_line(1001);
+	printf("string 1 %s\n", c);
+	free (c);
+	
+	c = get_next_line(fd[1]);
+	printf("string 2 %s", c);
+	free (c);
+
+	c = get_next_line(1002);
+	printf("string 3 %s\n", c);
+	free (c);
+	
+	c = get_next_line(fd[2]);
+	printf("string 4 %s", c);
+	free (c);
+
+	c = get_next_line(1003);
+	printf("string 5 %s\n", c);
+	free (c);
+
+	c = get_next_line(fd[1]);
+	printf("string 6 %s", c);
+	free (c);
+
+	close(fd[1]);
+	close(fd[2]);
+	system("leaks -q a.out");
 }*/
