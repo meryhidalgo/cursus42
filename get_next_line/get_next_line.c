@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mariacarazohidalgo <mariacarazohidalgo@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 12:04:17 by mariacarazo       #+#    #+#             */
-/*   Updated: 2023/02/02 19:48:47 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/02/13 23:41:27 by mariacarazo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,12 @@ void	leaks()
 	system("leaks -q a.out\n");
 }
 
-/*int	main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	int	fd;
 	char	*c = "A";
 
-	atexit(leaks);
+	//atexit(leaks);
 	fd = open(argv[1], O_RDONLY);
 	//fd = open("42_no_nl", O_RDONLY);
 	while (c)
@@ -130,4 +130,4 @@ void	leaks()
 	close(fd);
 	argc++;
 	//system("leaks -q a.out");
-}*/
+}
