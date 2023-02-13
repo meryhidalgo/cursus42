@@ -3,67 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mariacarazohidalgo <mariacarazohidalgo@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/15 14:15:51 by mariacarazo       #+#    #+#             */
-/*   Updated: 2023/02/04 11:08:46 by mcarazo-         ###   ########.fr       */
+/*   Created: 2023/02/08 23:07:24 by mariacarazo       #+#    #+#             */
+/*   Updated: 2023/02/13 23:17:57 by mariacarazo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	length;
-
-	length = 0;
-	while (str[length] != 0)
-		length++;
-	return (length);
-}
-
-char	*ft_strdup(char *s1)
-{
-	size_t	i;
-	char	*s2;
-
-	i = 0;
-	s2 = (char *)ft_calloc((ft_strlen(s1) + 1), sizeof(char));
-	if (s2 == 0 || s1 == 0)
-		return (NULL);
-	while (i < ft_strlen(s1))
-	{
-		s2[i] = s1[i];
-		i++;
-	}
-	s2[i] = 0;
-	return (s2);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*join;
-	int		i;
-	int		j;
-
-	if (s1 == 0 || s2 == 0)
-		return (NULL);
-	join = (char *)malloc(sizeof(char) * (ft_strlen(s1) + check_line(s2) + 2));
-	if (join == 0)
-		return (NULL);
-	i = ft_strlen(s1);
-	j = -1;
-	while (j++ < i)
-		join[j] = s1[j];
-	join[j] = '\0';
-	j = 0;
-	while (s2 [j] != '\n' && s2[j] != '\0')
-		join[i++] = s2[j++];
-	join[i] = s2[j];
-	join[i + 1] = '\0';
-	free(s1);
-	return (join);
-}
 
 void	ft_bzero(void *s, size_t n)
 {
@@ -87,4 +34,61 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	ft_bzero(space, size * count);
 	return (space);
+}
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	length;
+
+	length = 0;
+	while (str[length] != 0)
+		length++;
+	return (length);
+}
+
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*join;
+	int		i;
+
+	if (!s1 || !s2)
+		return (NULL);
+	join = (char *)ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+	if (!join)
+		return (NULL);
+	i = 0;
+	while (s1 && s1[i])
+	{
+		join[i] = s1[i];
+		i++;
+	}
+	while (*s2)
+		join[i++] = *s2++;
+	join[i] = '\0';
+	free(s1);
+	return (join);
+}
+
+char	*ft_strdup(char *s1, int start, int end, int x)
+{
+	char	*ptr;
+	int		i;
+
+	i = 0;
+	//printf("s1 %s\n", s1);
+	ptr = (char *)ft_calloc((end - start + 1), sizeof(char));
+	if (!ptr)
+		return (NULL);
+	while (start < end)
+	{
+		ptr[i++] = s1[start++];
+		//printf("start%d\n", start);
+		//printf("s11%d %s\n", i, s1);
+	}
+	ptr[i] = '\0';
+	//printf("ptr %s\n", ptr);
+	if (x == 1 && s1)
+		free(s1);
+	return (ptr);
 }

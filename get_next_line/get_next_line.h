@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mariacarazohidalgo <mariacarazohidalgo@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/21 19:31:59 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/02/04 12:21:01 by mcarazo-         ###   ########.fr       */
+/*   Created: 2023/02/08 23:07:57 by mariacarazo       #+#    #+#             */
+/*   Updated: 2023/02/09 00:04:01 by mariacarazo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_next_line(int fd);
 int		check_line(char *buffer);
 char	*ft_strjoin(char *s1, char *s2);
 size_t	ft_strlen(const char *str);
-char	*ft_strdup(char *s1);
+char	*ft_strdup(char *s1, int start, int end, int x);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 
