@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 14:00:37 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/03/03 17:14:54 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:09:09 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,57 @@ void	swap(t_list *stack)
 {
 	t_list	*aux;
 
-	aux = malloc(sizeof(t_list));
 	if (ft_lstsize(stack) < 2)
 		return ;
+	aux = malloc(sizeof(t_list));
 	aux->content = stack->next->content;
 	stack->next->content = stack->content;
 	stack->content = aux->content;
+	free(aux);
+}
+
+//toma el primer elemento del stack b (2) y lo pone encima del stack a (1). No hace nada si b(2) está vacío.
+void	push(t_list **stack_1, t_list **stack_2)
+{
+	t_list	*aux;
+
+	if (ft_lstsize(*stack_2) < 1)
+		return ;
+	aux = *stack_2;
+	ft_lstadd_front(stack_1, aux);
+	*stack_2 = (*stack_2)->next->next;
+}
+
+void	rotate(t_list **stack)
+{
+	t_list	*aux;
+	t_list	*last;
+
+	if (ft_lstsize(*stack) < 1)
+		return ;
+	aux = *stack;
+	*stack = (*stack)->next;
+	last = ft_lstlast(aux);
+	last->next = aux;
+	last->next->next = NULL;
+}
+
+void	rrotate(t_list **stack)
+{
+	t_list	*aux;
+	t_list	*last;
+
+	if (ft_lstsize(*stack) < 1)
+		return ;
+	
+	aux = *stack;
+	while (aux->next != NULL)
+	{
+		last = aux;
+		aux = aux->next;
+	}
+	ft_lstadd_front(stack, aux);
+	last->next = NULL;
 }
 
 int	*array_number(int argc, char **s_number)
@@ -64,18 +109,4 @@ void	print_list(t_list *numbers)
 		numbers = numbers->next;
 	}
 	printf("NULL\n");
-}
-
-int	main(int argc, char **argv)
-{
-	int		i;
-	t_list	*list;
-	int		*nums;
-
-	i = 0;
-	nums = array_number(argc, argv);
-	list = create_list(argc, nums);
-	print_list(list);
-	swap(list);
-	print_list(list);
 }
