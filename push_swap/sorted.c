@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 17:08:15 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/03/22 17:19:13 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/04/03 10:54:24 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	*stack_to_array(t_list *stack)
 	return (tab);
 }
 
-void	sorted_array(int **tab, int size)
+int	*sorted_array(int *tab, int size)
 {
 	int	pos;
 	int	i;
@@ -41,13 +41,14 @@ void	sorted_array(int **tab, int size)
 		min = pos;
 		while (i < size)
 		{
-			if ((*tab)[i] <= (*tab)[min])
+			if (tab[i] <= tab[min])
 				min = i;
 			i++;
 		}
-		aux = (*tab)[pos];
-		(*tab)[pos] = (*tab)[min];
-		(*tab)[min] = aux;
+		aux = tab[pos];
+		tab[pos] = tab[min];
+		tab[min] = aux;
 		pos++;
 	}
+	return (tab);
 }
