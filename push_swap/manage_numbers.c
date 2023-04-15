@@ -6,18 +6,18 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 12:12:06 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/04/05 13:50:26 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/04/15 11:14:02 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	print_array(int *tab)
+void	print_array(int *tab, int length)
 {
 	int	i;
 
 	i = 0;
-	while (i < 9)
+	while (i < length)
 		printf("%d ", tab[i++]);
 	printf("\n");
 }

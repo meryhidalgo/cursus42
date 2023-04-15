@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:40:56 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/04/05 12:24:45 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/04/15 11:57:14 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_list
 int		ft_lstsize(t_list *lst);
 int		ft_atoi(const char *str);
 t_list	*ft_lstnew(int content);
-void	print_array(int *tab);
+void	print_array(int *tab, int length);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_front(t_list **lst, t_list *new);
@@ -40,6 +40,5 @@ t_list	*create_list(int len, int *a_number);
 void	print_list(t_list *numbers);
 int		*stack_to_array(t_list *stack);
 int		*sorted_array(int *tab, int size);
-
 
 #endif
