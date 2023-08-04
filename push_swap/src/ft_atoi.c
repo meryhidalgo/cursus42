@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 19:52:12 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/04/28 20:01:39 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:16:18 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int	ft_atoi(const char *str)
 	}
 	while (str[i] > 47 && str[i] < 58)
 	{
-		if (sol * neg > 2147483647)
-			return (-1);
-		if (sol * neg < -2147483648)
-			return (0);
+		if (sol * neg > 2147483647 || sol * neg < -2147483648)
+			end_error();
 		sol = sol * 10 + (str[i] - 48);
 		i++;
 	}
+	if (sol * neg > 2147483647 || sol * neg < -2147483648)
+		end_error();
 	return (sol * neg);
 }

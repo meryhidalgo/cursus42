@@ -6,22 +6,25 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 20:06:12 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/04/28 20:06:19 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/08/02 13:01:20 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	upwards(int *tab, int *sorted, int num, int length)
+/*Estas funciones buscan el menor número del stack arriba y abajo y devuelven 
+su posición. Tal vez se podría mejorar dando como entrada tanto el chunk como 
+mult y que j empiece directamente en (chunk * (mult - 1))*/
+int	upwards(int *tab, int *sorted, int range[2], int length)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	//if (num >= length)
-	//	num = num - 3;
+	if (range[1] > (range[0] - 3))
+		range[1] = range[0] - 3;
 	while (i < length)
 	{
-		j = 0; //poco eficiente
-		while (j < (num)) //eh
+		j = 0;
+		while (j < (range[1]))
 		{
 			if (tab[i] == sorted[j++])
 				return (i);
@@ -31,18 +34,18 @@ int	upwards(int *tab, int *sorted, int num, int length)
 	return (-1);
 }
 
-int	downwards(int *tab, int *sorted, int num, int length)
+int	downwards(int *tab, int *sorted, int range[2], int length)
 {
 	int	i;
 	int	j;
 
-	i = length;
-	//if (num >= length)
-	//	num = num - 3;
+	i = length - 1;
+	if (range[1] > (range[0] - 3))
+		range[1] = range[0] - 3;
 	while (i >= 0)
 	{
-		j = 0; //poco eficiente
-		while (j < (num)) //eh
+		j = 0;
+		while (j < (range[1]))
 		{
 			if (tab[i] == sorted[j++])
 				return (i);
