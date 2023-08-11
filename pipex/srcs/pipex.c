@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:38:41 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/08/11 13:43:24 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/08/11 13:52:31 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	exec_process(char *cmd, char **envp)
 void	pipex(char *cmd, char **envp)
 {
 	pid_t	pid;
+	int		status;
 	int		pipefd[2];
 
 	if (pipe(pipefd) == -1)
@@ -89,6 +90,7 @@ void	pipex(char *cmd, char **envp)
 		dup2(pipefd[0], STDIN_FILENO);
 		waitpid(pid, NULL, 0);
 	}
+	//return (WEXITSTATUS(status));
 }
 
 void	out_exec(char *cmd, char **envp, int fd[2])
