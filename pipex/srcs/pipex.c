@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:38:41 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/08/11 13:52:31 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:06:29 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	exec_process(char *cmd, char **envp)
 void	pipex(char *cmd, char **envp)
 {
 	pid_t	pid;
-	int		status;
 	int		pipefd[2];
 
 	if (pipe(pipefd) == -1)
@@ -81,21 +80,21 @@ void	pipex(char *cmd, char **envp)
 	else if (pid == 0)
 	{
 		close (pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
+		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+			error_message("Error in dup2", 0);
 		exec_process(cmd, envp);
 	}
 	else
 	{
 		close (pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
-		waitpid(pid, NULL, 0);
+		if (dup2(pipefd[0], STDIN_FILENO) == -1)
+			error_message("Error in dup2", 0);
 	}
-	//return (WEXITSTATUS(status));
 }
 
-void	out_exec(char *cmd, char **envp, int fd[2])
+void	out_exec(char *cmd, char **envp, int fd)
 {
-	//int		status;
+	int		status;
 	pid_t	pid;
 
 	pid = fork();
@@ -103,15 +102,16 @@ void	out_exec(char *cmd, char **envp, int fd[2])
 		error_message("Error in fork", 0);
 	else if (pid == 0)
 	{
-		dup2(fd[1], STDOUT_FILENO);
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			error_message("Error in dup2", 0);
 		exec_process(cmd, envp);
 	}
-	/*else
+	else
 	{
 		waitpid(pid, &status, 0);
-		//if (WEXITSTATUS(status) != 0)
-		//	exit(EXIT_FAILURE);
-	}*/
+		if (WEXITSTATUS(status) != 0)
+			exit(EXIT_FAILURE);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
@@ -122,16 +122,17 @@ int	main(int ac, char **av, char **envp)
 		error_message("Not enough arguments to perform pipex.\n", 1);
 	else if (ac == 5)
 	{
-		fd[0] = open(av[1], O_RDONLY | O_CLOEXEC);
-		fd[1] = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC | O_CLOEXEC, 0644);
+		fd[0] = open(av[1], O_RDONLY);
 		if (fd[0] == -1)
 			error_message("Error in infile", 0);
+		fd[1] = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC | O_CLOEXEC, 0644);
 		if (fd[1] == -1)
 			error_message("Error in opening outfile", 0);
-		dup2(fd[0], STDIN_FILENO);
+		if (dup2(fd[0], STDIN_FILENO) == -1)
+			error_message("Error in dup2", 0);
 		pipex(av[2], envp);
 		close(fd[0]);
-		out_exec(av[ac - 2], envp, fd);
+		out_exec(av[ac - 2], envp, fd[1]);
 		close (fd[1]);
 	}
 	else
@@ -139,3 +140,5 @@ int	main(int ac, char **av, char **envp)
 	return (0);
 }
 	//system("leaks -q pipex");
+
+//si no hay infile, el programa debe ejecutar los comandos e imprimir un 0 en el outfile

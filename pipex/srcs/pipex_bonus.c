@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:38:41 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/08/11 13:05:09 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/09/13 15:43:43 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	exec_process(char *cmd, char **envp)
 
 void	pipex(char *cmd, char **envp)
 {
-	int		status;
 	pid_t	pid;
 	int		pipefd[2];
 
@@ -81,18 +80,19 @@ void	pipex(char *cmd, char **envp)
 	else if (pid == 0)
 	{
 		close (pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
+		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+			error_message("Error in dup2", 0);
 		exec_process(cmd, envp);
 	}
 	else
 	{
 		close (pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
-		waitpid(pid, &status, 0);
+		if (dup2(pipefd[0], STDIN_FILENO) == -1)
+			error_message("Error in dup2", 0);
 	}
 }
 
-void	out_exec(char *cmd, char **envp, int fd[2])
+void	out_exec(char *cmd, char **envp, int fd)
 {
 	int		status;
 	pid_t	pid;
@@ -102,7 +102,8 @@ void	out_exec(char *cmd, char **envp, int fd[2])
 		error_message("Error in fork", 0);
 	else if (pid == 0)
 	{
-		dup2(fd[1], STDOUT_FILENO);
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			error_message("Error in duup2", 0);
 		exec_process(cmd, envp);
 	}
 	else
@@ -120,21 +121,24 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac < 5)
 		error_message("Not enough arguments to perform pipex.\n", 1);
+	fd[1] = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC | O_CLOEXEC, 0644);
+	if (fd[1] == -1)
+		error_message("Error in opening outfile", 0);
 	if (ft_strncmp(av[1], "here_doc", 8) == 0)
 		heredoc(av, envp);
 	else
 	{
 		fd[0] = open(av[1], O_RDONLY | O_CLOEXEC);
-		fd[1] = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC | O_CLOEXEC, 0644);
 		if (fd[0] == -1)
 			error_message("Error in infile", 0);
 		i = 2;
-		dup2(fd[0], STDIN_FILENO);
+		if (dup2(fd[0], STDIN_FILENO) == -1)
+			error_message("Error in dup2", 0);
 		while (i < (ac - 2))
 			pipex(av[i++], envp);
 		close(fd[0]);
 	}
-	out_exec(av[ac - 2], envp, fd);
+	out_exec(av[ac - 2], envp, fd[1]);
 	close (fd[1]);
 	return (0);
 }
