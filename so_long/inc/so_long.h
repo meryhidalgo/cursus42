@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:23:07 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/11 10:34:56 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/11 12:12:19 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 typedef struct s_img
 {
-	void	*mlx_img;
+	void	*img;
 	char	*addr;
 	int		bpp;
 	int		line_len;
@@ -38,6 +38,7 @@ typedef struct s_game
 	t_img	cherry;
 	t_img	pac;
 	t_img	black;
+	t_img	exit;
 }	t_game;
 
 typedef struct s_map
@@ -47,6 +48,7 @@ typedef struct s_map
 	char	**matrix;
 	int		player[2];
 	int		elements[3];
+	int		mov;
 	t_game	game;
 }	t_map;
 
@@ -60,7 +62,9 @@ typedef struct s_data
 int		parse_file(char *file, t_map *map);
 char	**copy_matrix(t_map *map);
 void	count_rows(int fd, char *c, t_map *map);
-size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize);
+size_t	ft_strlcpy(char *dest, const char *src, size_t length);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	fill(char **matrix, int elements[][3], int row, int col);
 void	print_matrix(char **matrix);
 int		init_window(t_data *data, t_map map);

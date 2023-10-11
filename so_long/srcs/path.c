@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 13:17:35 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/11 09:42:51 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/11 12:39:34 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_matrix(char **matrix)
 	int	i;
 
 	i = 0;
-	while (*(matrix[i]))
+	while (i < 6)
 	{
 		printf("%s\n", matrix[i]);
 		i++;
@@ -40,22 +40,6 @@ void	fill(char **matrix, int elements[][3], int row, int col)
 	fill(matrix, elements, row, col + 1);
 	fill(matrix, elements, row + 1, col);
 	fill(matrix, elements, row, col - 1);
-}
-
-size_t	ft_strlcpy(char *dest, const char *src, size_t length)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < length)
-	{
-		if (i == length - 1)
-			dest[i] = '\0';
-		else
-			dest[i] = src[i];
-		i++;
-	}
-	return (length);
 }
 
 char	**copy_matrix(t_map *map)

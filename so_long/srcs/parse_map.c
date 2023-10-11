@@ -6,31 +6,29 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:52:11 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/11 10:34:17 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/11 12:47:02 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 #include "../get_next_line/get_next_line.h"
 
-/*
-- Extensión .ber ???? */
-
-void	count_elements(char *row, int elements[][3], int player[][2], int cols)
+void	count_elements(char *row, t_map *map, int i)
 {
 	int	j;
 
 	j = 0;
-	while (j < cols)
+	while (j < map->col)
 	{
 		if (row[j] == 'C')
-			(*elements)[0]++;
+			map->elements[0]++;
 		if (row[j] == 'E')
-			(*elements)[1]++;
+			map->elements[1]++;
 		if (row[j] == 'P')
 		{
-			(*elements)[2]++;
-			(*player)[1] = j;
+			map->elements[2]++;
+			map->player[1] = j;
+			map->player[0] = i;
 		}
 		j++;
 	}
@@ -55,12 +53,9 @@ int	through_matrix(t_map *map)
 		}
 		else
 		{
-			count_elements(map->matrix[i], &(map->elements),
-				&(map->player), map->col);
+			count_elements(map->matrix[i], map, i);
 			if (map->matrix[i][0] != '1' || map->matrix[i][map->col - 1] != '1')
 				return (1);
-			if (map->player[1] != 0)
-				map->player[0] = i - 1;
 		}
 	}
 	return (0);
@@ -122,8 +117,17 @@ int	parse_file(char *file, t_map *map)
 {
 	int		fd;
 	char	*c;
+	char	*ext;
 
 	map->row = 1;
+	ext = ft_substr(file, ft_strlen(file) - 4, ft_strlen(file));
+	if (ft_strncmp(ext, ".ber", 4) != 0)
+	{
+		free(ext);
+		printf("Error\n");
+		return (1);
+	}
+	free(ext);
 	fd = open(file, O_RDONLY);
 	c = get_next_line(fd);
 	count_rows(fd, c, map);
