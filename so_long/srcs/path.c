@@ -6,23 +6,35 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 13:17:35 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/11 12:39:34 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:12:45 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 #include "../get_next_line/get_next_line.h"
 
-void	print_matrix(char **matrix)
+int	other_element(t_map *map)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (i < 6)
+	while (i < map->row)
 	{
-		printf("%s\n", matrix[i]);
+		j = 0;
+		while (j < map->col - 1)
+		{
+			if (map->matrix[i][j] != '0' && map->matrix[i][j] != '1'
+				&& map->matrix[i][j] != 'E' && map->matrix[i][j] != 'C'
+				&& map->matrix[i][j] != 'P' )
+			{
+				return (1);
+			}
+			j++;
+		}
 		i++;
 	}
+	return (0);
 }
 
 void	fill(char **matrix, int elements[][3], int row, int col)
@@ -68,4 +80,30 @@ void	count_rows(int fd, char *c, t_map *map)
 		c = get_next_line(fd);
 		(map->row)++;
 	}
+}
+
+int	create_matrix(int fd, char *c, t_map *map)
+{
+	int	i;
+
+	map->matrix = (char **)malloc(map->row * sizeof(char *));
+	i = 0;
+	while (i < map->row)
+		map->matrix[i++] = (char *)malloc(map->col * sizeof(char));
+	i = 0;
+	while (c)
+	{
+		if ((int)ft_strlen(c) != map->col)
+		{
+			message_error(3, map);
+			return (1);
+		}
+		ft_strlcpy(map->matrix[i], c, map->col);
+		free (c);
+		c = get_next_line(fd);
+		i++;
+	}
+	free(c);
+	close(fd);
+	return (0);
 }

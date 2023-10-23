@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:52:11 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/11 12:47:02 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:10:21 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,52 +64,50 @@ int	through_matrix(t_map *map)
 int	check_all_paramters(t_map *map)
 {
 	int		i;
-	int		result;
 	char	**matrix2;
 
 	i = 0;
-	result = 0;
-	map->elements[0] = 0;
-	map->elements[1] = 0;
-	map->elements[2] = 0;
-	map->player[0] = 0;
-	map->player[1] = 0;
+	ft_zero(map->elements, 3);
+	ft_zero(map->player, 2);
 	if (through_matrix(map) == 1)
-		result = 1;
+		return (4);
 	if (map->elements[0] < 1 || map->elements[1] != 1 || map->elements[2] != 1)
-		result = 1;
+		return (5);
 	matrix2 = copy_matrix(map);
 	fill(matrix2, &map->elements, map->player[0], map->player[1]);
 	if (map->elements[0] != 0 || map->elements[1] != 0)
-		result = 1;
+		return (6);
 	while (i < map->row)
+	{
+		count_elements(map->matrix[i], map, i);
 		free (matrix2[i++]);
+	}
 	free(matrix2);
-	return (result);
+	return (0);
 }
 
-int	create_matrix(int fd, char *c, t_map *map)
+int	parse_map(char *file, int fd, char *c, t_map *map)
 {
-	int	i;
+	int	error;
 
-	map->matrix = (char **)malloc(map->row * sizeof(char *));
-	i = 0;
-	while (i < map->row)
-		map->matrix[i++] = (char *)malloc(map->col * sizeof(char));
-	i = 0;
-	while (c)
+	fd = open(file, O_RDONLY);
+	c = get_next_line(fd);
+	map->col = ft_strlen(c);
+	(map->row)--;
+	if (create_matrix(fd, c, map) == 1)
+		return (1);
+	if (other_element(map) == 1)
 	{
-		if ((int)ft_strlen(c) != map->col)
-		{
-			printf("Error\n");
-			return (1);
-		}
-		ft_strlcpy(map->matrix[i], c, map->col);
-		free (c);
-		c = get_next_line(fd);
-		i++;
+		message_error(8, map);
+		return (1);
 	}
-	close(fd);
+	(map->col)--;
+	error = check_all_paramters(map);
+	if (error != 0)
+	{
+		message_error(error, map);
+		return (1);
+	}
 	return (0);
 }
 
@@ -124,27 +122,20 @@ int	parse_file(char *file, t_map *map)
 	if (ft_strncmp(ext, ".ber", 4) != 0)
 	{
 		free(ext);
-		printf("Error\n");
+		message_error(2, map);
 		return (1);
 	}
 	free(ext);
 	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		message_error(7, map);
+		return (1);
+	}
 	c = get_next_line(fd);
 	count_rows(fd, c, map);
 	close (fd);
-	fd = open(file, O_RDONLY);
-	c = get_next_line(fd);
-	map->col = ft_strlen(c);
-	(map->row)--;
-	if (create_matrix(fd, c, map) == 1)
-		return (1);
-	(map->col)--;
-	if (check_all_paramters(map) == 1)
-	{
-		printf("Error\n");
-		return (1);
-	}
-	return (0);
+	return (parse_map(file, fd, c, map));
 }
 
 /*int	main(int argc, char **argv)

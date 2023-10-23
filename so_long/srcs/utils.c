@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 12:08:46 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/11 12:13:57 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:25:53 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,42 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_zero(int *s, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return ;
+	while (i < n)
+		s[i++] = 0;
+}
+
+void	message_error(int error, t_map *map)
+{
+	if (error == 1)
+		write(1, "Error\nDebe introducir un archivo a parsear.\n", 45);
+	else if (error == 2)
+		write(1, "Error\nEl archivo no tiene extensión .ber.\n", 43);
+	else if (error == 3)
+		write(1, "Error\nEl mapa no es rectangular.\n", 34);
+	else if (error == 4)
+		write(1, "Error\nEl mapa no está rodeado de muros.\n", 41);
+	else if (error == 5)
+	{
+		if (map->elements[0] < 1)
+			write(1, "Error\nEl mapa debe tener mínimo un coleccionable.\n", 52);
+		else if (map->elements[1] != 1)
+			write(1, "Error\nEl mapa debe tener una salida.\n", 38);
+		else if (map->elements[2] != 1)
+			write(1, "Error\nEl mapa debe tener un jugador.\n", 38);
+	}
+	else if (error == 6)
+		write(1, "Error\nNo hay un camino válido.\n", 32);
+	else if (error == 7)
+		write(1, "Error\nNo se puede abrir el archivo solicitado.\n", 48);
+	else if (error == 8)
+		write(1, "Error\nEl mapa debe únicamente contener 0, 1, P, C o E.\n", 56);
 }

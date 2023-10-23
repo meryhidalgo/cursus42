@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:21:52 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/11 11:59:39 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:21:55 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,40 @@ int	init_window(t_data *data, t_map map)
 	return (0);
 }
 
+void	set_player_exit(t_data data, t_map map, t_game game, int i[2])
+{
+	if (map.matrix[i[0]][i[1]] == 'P')
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
+			game.pacL.img, D_SIZE * i[1], D_SIZE * i[0]);
+	else if (map.matrix[i[0]][i[1]] == 'E')
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
+			game.exit.img, D_SIZE * i[1], D_SIZE * i[0]);
+	else
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
+			game.food.img, D_SIZE * i[1], D_SIZE * i[0]);
+}
+
 void	set_elements(t_data data, t_map map, t_game game)
 {
-	int	i;
-	int	j;
+	int	i[2];
 
-	i = 0;
-	while (i < map.row)
+	i[0] = 0;
+	while (i[0] < map.row)
 	{
-		j = 0;
-		while (j < map.col)
+		i[1] = 0;
+		while (i[1] < map.col)
 		{
-			if (map.matrix[i][j] == '1')
+			if (map.matrix[i[0]][i[1]] == '1')
 				mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
-					game.wall.img, D_SIZE * j, D_SIZE * i);
-			else if (map.matrix[i][j] == 'C')
+					game.wall.img, D_SIZE * i[1], D_SIZE * i[0]);
+			else if (map.matrix[i[0]][i[1]] == 'C')
 				mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
-					game.cherry.img, D_SIZE * j, D_SIZE * i);
-			else if (map.matrix[i][j] == 'P')
-				mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
-					game.pac.img, D_SIZE * j, D_SIZE * i);
-			else if (map.matrix[i][j] == 'E')
-				mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
-					game.exit.img, D_SIZE * j, D_SIZE * i);
+					game.cherry.img, D_SIZE * i[1], D_SIZE * i[0]);
 			else
-				mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
-					game.food.img, D_SIZE * j, D_SIZE * i);
-			j++;
+				set_player_exit(data, map, game, i);
+			i[1]++;
 		}
-		i++;
+		i[0]++;
 	}
 }
 
@@ -72,8 +77,14 @@ t_game	init_game(t_data data, t_map map)
 			"./images/food.xpm", &len, &len);
 	game.cherry.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/cherry.xpm", &len, &len);
-	game.pac.img = mlx_xpm_file_to_image(data.mlx_ptr,
-			"./images/pac.xpm", &len, &len);
+	game.pacR.img = mlx_xpm_file_to_image(data.mlx_ptr,
+			"./images/pac-R.xpm", &len, &len);
+	game.pacL.img = mlx_xpm_file_to_image(data.mlx_ptr,
+			"./images/pac-L.xpm", &len, &len);
+	game.pacD.img = mlx_xpm_file_to_image(data.mlx_ptr,
+			"./images/pac-D.xpm", &len, &len);
+	game.pacU.img = mlx_xpm_file_to_image(data.mlx_ptr,
+			"./images/pac-U.xpm", &len, &len);
 	game.black.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/black.xpm", &len, &len);
 	game.exit.img = mlx_xpm_file_to_image(data.mlx_ptr,

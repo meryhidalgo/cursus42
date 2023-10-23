@@ -6,7 +6,7 @@
 #    By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/20 13:26:15 by mcarazo-          #+#    #+#              #
-#    Updated: 2023/10/11 12:46:14 by mcarazo-         ###   ########.fr        #
+#    Updated: 2023/10/23 12:32:53 by mcarazo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ INCLUDES	= inc
 MLX			= mlx
 GNL			= get_next_line
 
-SRCS		= parse_map.c path.c utils.c create_map.c movement.c 
+SRCS		= parse_map.c path.c utils.c create_map.c movement.c handle_events.c
 
 # Compiler options
 CC			= gcc
