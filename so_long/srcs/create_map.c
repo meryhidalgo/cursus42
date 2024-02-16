@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:21:52 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/23 13:21:55 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:24:04 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	set_player_exit(t_data data, t_map map, t_game game, int i[2])
 {
 	if (map.matrix[i[0]][i[1]] == 'P')
 		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
-			game.pacL.img, D_SIZE * i[1], D_SIZE * i[0]);
+			game.pacl.img, D_SIZE * i[1], D_SIZE * i[0]);
 	else if (map.matrix[i[0]][i[1]] == 'E')
 		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr,
 			game.exit.img, D_SIZE * i[1], D_SIZE * i[0]);
@@ -77,13 +77,13 @@ t_game	init_game(t_data data, t_map map)
 			"./images/food.xpm", &len, &len);
 	game.cherry.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/cherry.xpm", &len, &len);
-	game.pacR.img = mlx_xpm_file_to_image(data.mlx_ptr,
+	game.pacr.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/pac-R.xpm", &len, &len);
-	game.pacL.img = mlx_xpm_file_to_image(data.mlx_ptr,
+	game.pacl.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/pac-L.xpm", &len, &len);
-	game.pacD.img = mlx_xpm_file_to_image(data.mlx_ptr,
+	game.pacd.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/pac-D.xpm", &len, &len);
-	game.pacU.img = mlx_xpm_file_to_image(data.mlx_ptr,
+	game.pacu.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/pac-U.xpm", &len, &len);
 	game.black.img = mlx_xpm_file_to_image(data.mlx_ptr,
 			"./images/black.xpm", &len, &len);

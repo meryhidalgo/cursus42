@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:52:11 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/16 13:10:21 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2023/10/25 08:22:55 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,9 @@ int	check_all_paramters(t_map *map)
 		return (5);
 	matrix2 = copy_matrix(map);
 	fill(matrix2, &map->elements, map->player[0], map->player[1]);
-	if (map->elements[0] != 0 || map->elements[1] != 0)
+	if (map->elements[0] > 0 || map->elements[1] > 0)
 		return (6);
+	ft_zero(map->elements, 3);
 	while (i < map->row)
 	{
 		count_elements(map->matrix[i], map, i);

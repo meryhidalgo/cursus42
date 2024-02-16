@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:05:09 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/23 13:28:05 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:42:38 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ void	black_and_pac(t_data data, t_map *map, int x[2], int keysym)
 	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.black.img,
 		D_SIZE * x[0], D_SIZE * x[1]);
 	if (keysym == 123 || keysym == 0)
-		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacR.img,
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacr.img,
 			D_SIZE * map->player[1], D_SIZE * map->player[0]);
-	else if (keysym == 124 || keysym == 1)
-		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacL.img,
+	else if (keysym == 124 || keysym == 2)
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacl.img,
 			D_SIZE * map->player[1], D_SIZE * map->player[0]);
-	else if (keysym == 125 || keysym == 2)
-		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacD.img,
+	else if (keysym == 125 || keysym == 1)
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacd.img,
 			D_SIZE * map->player[1], D_SIZE * map->player[0]);
 	else
-		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacU.img,
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacu.img,
 			D_SIZE * map->player[1], D_SIZE * map->player[0]);
 }
 
@@ -69,7 +69,7 @@ int	repaint(t_data data, t_map *map, int keysym)
 	{
 		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.black.img,
 			D_SIZE * x[0], D_SIZE * x[1]);
-		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacL.img,
+		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, map->game.pacl.img,
 			D_SIZE * map->player[1], D_SIZE * map->player[0]);
 	}
 	else
@@ -99,7 +99,10 @@ int	handle_keypress(int keysym, t_data *data)
 			write(1, "\n", 1);
 		}
 		else if (value == 2)
+		{
+			write(1, "Conseguido!\n", 12);
 			end_game(data);
+		}
 	}
 	return (0);
 }

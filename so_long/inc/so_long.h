@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:23:07 by mcarazo-          #+#    #+#             */
-/*   Updated: 2023/10/23 13:22:33 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:23:27 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ typedef struct s_game
 	t_img	wall;
 	t_img	food;
 	t_img	cherry;
-	t_img	pacR;
-	t_img	pacL;
-	t_img	pacD;
-	t_img	pacU;
+	t_img	pacr;
+	t_img	pacl;
+	t_img	pacd;
+	t_img	pacu;
 	t_img	black;
 	t_img	exit;
 }	t_game;
