@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:15 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/02/16 12:42:42 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:23:33 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,77 +14,61 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "../inc/philo.h"
 
-pthread_mutex_t	mutex;
+//pthread_mutex_t	mutex;
+
+typedef struct s_program
+{
+	int					nb_philo;
+	pthread_mutex_t		mwrite;
+}				t_program;
+
+typedef struct s_philo
+{
+	int					id;
+	pthread_t			thread;
+	t_program			*program;
+}				t_philo;
 
 void	*thread_run(void* data)
 {
-	int	i;
-	int	i_data;
+	t_philo	*p;
 
+	p = (t_philo *) data;
+	sleep(2);
+	pthread_mutex_lock(&p->program->mwrite);
 	printf("[TH_ID:%ld]: Hello from the thread \n", (long)pthread_self());
-	pthread_mutex_lock(&mutex);
-	printf("[TH_ID:%ld]: Reading %i \n", (long)pthread_self(), (*(int *)data));
-	i_data = (*(int *)data);
-	i = 0;
-	while (i < 5)
-	{
-		printf("%d\n", i_data);
-		i_data++;
-		i++;
-	}
-	(*(int *)data) = i_data;
-	printf("[TH_ID:%ld]: Writing %i \n", (long)pthread_self(), (*(int *)data));
-	pthread_mutex_unlock(&mutex);
+	//printf("[TH_ID:%ld]: Reading %i \n", (long)pthread_self(), p->id);
+	//i_data = (*(int *)data);
+	printf("take 1 fork\n");
+	sleep(1); //It should be removed
+	//p->id++;
+	//(*(int *)data) = i_data;
+	printf("take 2 fork\n");
+	printf("take 3 fork\n");
+	//printf("[TH_ID:%ld]: Writing %i \n", (long)pthread_self(), p->id);
 	printf("[TH_ID: %ld]: To exit...............\n", (long)pthread_self());
-	return (NULL);
+	pthread_mutex_unlock(&p->program->mwrite);
+	return (data);
 }
 
-int	init_philo(t_philo *philos, char **argv, long int ini)
-{
-	int	i;
-
-	i = 0;
-	while (i < ft_atoi(argv[1]))
-	{
-		philos[i].id = i + 1;
-		philos[i].status = -1;
-		philos[i].time_to_die = ft_atoi(argv[2]);
-		philos[i].time_to_eat = ft_atoi(argv[3]) * 1000;
-		philos[i].time_to_sleep = ft_atoi(argv[4]) * 1000;
-		philos[i].last_eating = ini;
-		philos[i].ini = ini;
-		if (pthread_mutex_init(&philos[i].l_fork, NULL) != 0)
-			return (-1);
-		if (i > 0)
-			philos[i].r_fork = &(philos[i - 1].l_fork);
-		i++;
-	}
-	philos[0].r_fork = &(philos[i - 1].l_fork);
-	return (0);
-}
-
-int main(int argc, char **argv)
+int main()
 {
 	int				i;
-	pthread_t		thread[2];
-	int				data;
+	//pthread_t		thread[2];
+	t_philo			data[5];
+	t_program		program;
 	int				thread_rc;
-	int				nb_philo;
-	t_philo			*philos;
-	struct timeval	ini;
+	int				*ptr_output_data;
 
-	gettimeofday(&ini, 0);
-	nb_philo = ft_atoi(argv[1]);
-	philos = (t_philo *)malloc(sizeof(t_philo) * nb_philo);
-	init_philo(philos, argv, ini.tv_sec * 1000 + ini.tv_usec / 1000);
-
-	data = 0;
-	while (i < nb_philo)
+	//data.id = 0;
+	if (pthread_mutex_init(&program.mwrite,NULL)!=0) 
+		return (-1);
+	for (i = 0;i < 5; i++)
 	{
+		data[i].program = &program;
 		printf("[MAIN:%ld]: Starting............ \n", (long)pthread_self());
-		thread_rc = pthread_create(&philos[i].thread, NULL, thread_run, &data);
+		thread_rc = pthread_create(&data[i].thread, NULL, thread_run, &data[i]);
 		if (thread_rc != 0)
 		{
 			printf("Error creating the thread. Code %i",thread_rc);
@@ -93,11 +77,9 @@ int main(int argc, char **argv)
 	}
 	//sleep(1);
 	printf("[MAIN:%ld]: Thread allocated \n", (long)pthread_self());
-	for (i = 0; i < 2; i++)
-		pthread_join(thread[i], NULL);
-	pthread_mutex_destroy(&mutex);
-	//sleep(1);
-	printf("[MAIN:%ld]: Thread return\n", (long)pthread_self());
-	//printf("[MAIN:%ld]: Thread returns %d \n", (long)pthread_self(), *ptr_output_data);
+	for (i = 0; i < 5; i++)
+		pthread_join(data[i].thread,(void **)&ptr_output_data);
+	pthread_mutex_destroy(&program.mwrite);
+	printf("[MAIN:%ld]: Thread returns %d \n", (long)pthread_self(), *ptr_output_data);
 	return (0);
 } 

@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:36:08 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/02/16 11:41:31 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:10:57 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,24 @@ int	msg_error(char *message)
 {
 	printf("%s\n", message);
 	return (1);
+}
+
+int	ft_time(void)
+{
+	struct timeval	e;
+
+	gettimeofday(&e, 0);
+	return (e.tv_sec * 1000 + e.tv_usec / 1000);
+}
+
+int	ft_usleep(int time)
+{
+	int	start;
+
+	start = ft_time();
+	while ((ft_time() - start) < time)
+		usleep(time / 10);
+	return (0);
 }
 
 int	checker(int argc, char **argv)
