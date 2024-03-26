@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:36:08 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/03/20 18:10:57 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:16:35 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,27 +34,6 @@ int	ft_usleep(int time)
 	while ((ft_time() - start) < time)
 		usleep(time / 10);
 	return (0);
-}
-
-int	checker(int argc, char **argv)
-{
-	if (argc < 5 || argc > 7)
-		return (msg_error("El nº de argumentos introducidos no es correcto."));
-	else if (ft_atoi(argv[1]) < 1)
-		return (msg_error("El nº de filósofos no puede ser inferior a 1."));
-	else if (ft_atoi(argv[1]) > 200)
-		return (msg_error("El nº de filósofos no debe ser superior a 200."));
-	else if (ft_atoi(argv[2]) < 0)
-		return (msg_error("El time_to_die no puede ser negativo."));
-	else if (ft_atoi(argv[3]) < 0)
-		return (msg_error("El time_to_eat no puede ser negativo."));
-	else if (ft_atoi(argv[4]) < 0)
-		return (msg_error("El time_to_sleep no puede ser negativo."));
-	else if (ft_atoi(argv[4]) < 0)
-		return (msg_error("El nº de comidas debe ser mayor a 0."));
-	else
-		return (0);
-
 }
 
 int	ft_atoi(const char *str)
@@ -85,3 +64,21 @@ int	ft_atoi(const char *str)
 	}
 	return (sol * neg);
 }
+
+int	end_program(t_philo *philos, t_program *program)
+{
+	int	i;
+
+	i = 0;
+	while (i < program->nb_philo)
+	{
+		pthread_detach(philos[i].thread);
+		pthread_mutex_destroy(philos[i].r_fork);
+		pthread_mutex_destroy(&philos[i].monitor);
+		i++;
+	}
+	pthread_mutex_destroy(&program->mwrite);
+	free(philos);
+	return (1);
+}
+
