@@ -6,7 +6,7 @@
 #    By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/16 11:37:17 by mcarazo-          #+#    #+#              #
-#    Updated: 2024/03/26 16:46:09 by mcarazo-         ###   ########.fr        #
+#    Updated: 2024/03/27 13:04:36 by mcarazo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCSDIR		= srcs
 OBJSDIR		= objs
 INCLUDES	= in
 
-SRCS		= philo.c philo_utils.c routine.c check_philos.c
+SRCS		= philo.c philo_utils.c routine.c check_philos.c init.c
 
 # Compiler options
 CC			= gcc

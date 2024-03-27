@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:49:04 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/03/26 16:25:46 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:58:51 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,17 @@ int	check_eaten(t_philo *philos, t_program *program, int p)
 		meals = philos[i].nb_meals;
 		pthread_mutex_unlock(&philos[i].monitor);
 		if (meals >= program->nb_meals)
-			p = 1;
-		else
-		{
-			p = 0;
-			break ;
-		}
+			p++;
 		i++;
 	}
-	if (p == 1)
+	if (p == program->nb_philo)
 	{
 		pthread_mutex_lock(&program->ewrite);
 		program->eaten_ph = 1;
 		pthread_mutex_unlock(&program->ewrite);
+		return (1);
 	}
-	return (p);
+	return (0);
 }
 
 int	check_death(t_philo *p)
@@ -79,14 +75,15 @@ int	check_death(t_philo *p)
 	struct timeval	t;
 	long int		now;
 	long int		last;
+	//int				status;
 
 	gettimeofday(&t, 0);
 	now = t.tv_sec * 1000 + t.tv_usec / 1000;
 	pthread_mutex_lock(&p->monitor);
 	last = p->last_eating;
+	if (now - last > p->time_to_die)// && status != 0)
+		return (pthread_mutex_unlock(&p->monitor), 1);
 	pthread_mutex_unlock(&p->monitor);
-	if (now - last > p->time_to_die && p->status != 0)
-		return (1);
 	return (0);
 }
 
@@ -109,7 +106,7 @@ int	philo_death(t_philo *philos, t_program *program)
 			pthread_mutex_unlock(&program->mwrite);
 			id = philos[i].id;
 			printf("%d %i died\n", (int)(ft_time() - philos[i].ini), id);
-			return (end_program(philos, program));
+			return (1);
 		}
 		i++;
 	}

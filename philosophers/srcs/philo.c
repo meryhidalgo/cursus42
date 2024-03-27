@@ -6,39 +6,11 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:21:23 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/03/26 16:47:58 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:54:11 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-
-int	init_philo(t_philo *philos, char **argv, long int ini, t_program *program)
-{
-	int	i;
-
-	i = 0;
-	while (i < ft_atoi(argv[1]))
-	{
-		philos[i].id = i + 1;
-		philos[i].status = -1;
-		philos[i].time_to_die = ft_atoi(argv[2]);
-		philos[i].time_to_eat = ft_atoi(argv[3]);
-		philos[i].time_to_sleep = ft_atoi(argv[4]);
-		philos[i].nb_meals = 0;
-		philos[i].last_eating = ini;
-		philos[i].ini = ini;
-		philos[i].program = program;
-		if (pthread_mutex_init(&philos[i].l_fork, NULL) != 0)
-			return (-1);
-		if (i > 0)
-			philos[i].r_fork = &(philos[i - 1].l_fork);
-		if (pthread_mutex_init(&philos[i].monitor, NULL) != 0)
-			return (-1);
-		i++;
-	}
-	philos[0].r_fork = &(philos[i - 1].l_fork);
-	return (0);
-}
 
 int	ft_continue(t_program program)
 {
@@ -61,21 +33,39 @@ void	*routine(void *philo)
 	t_philo	*p;
 
 	p = (t_philo *) philo;
-	if (p->id % 2 == 0)
-		ft_usleep(1);
-	while (check_death(p) == 0) //while (1)
+	/*if (p->id % 2 == 0)
+		ft_usleep(1);*/
+	while (ft_continue(*p->program) == 0) //while (1)
 	{
-		if (ft_continue(*p->program) == 1 || eat(p) == 1)
+		if (eat(p) == 1)
 			return (philo);
-		if (ft_continue(*p->program) == 0)
-			fsleep(p);
-		if (ft_continue(*p->program) == 0)
-			think(p);
-		if (ft_continue(*p->program) == 1)
-			return (philo);
-		//printf("%i %d eaten status\n", p->id, p->program->eaten_ph);
+		fsleep(p);
+		think(p);
 	}
 	return (philo);
+}
+
+void	*supervisor(void *data)
+{
+	t_philo	*philos;
+
+	philos = (t_philo *) data;
+	while (1)
+	{
+		if (philo_death(philos, philos[0].program) == 1)
+		{
+			//system("leaks -q philo");
+			printf("MUERTE");
+			return (0);
+		}
+		if (philos[0].program->nb_meals > 0 && check_eaten(philos, philos[0].program, 0) == 1)
+		{
+			end_program(philos, philos[0].program);
+			//system("leaks -q philo");
+			printf("FIN COMIDAS");
+			return (0);
+		}
+	}
 }
 
 int	main(int argc, char **argv)
@@ -83,49 +73,42 @@ int	main(int argc, char **argv)
 	int				i;
 	t_philo			*philos;
 	t_program		program;
+	//pthread_t		thread;
 	struct timeval	ini;
 
 	gettimeofday(&ini, 0);
-	if (checker(argc, argv) == 1)
-		return (-1);
-	program.nb_philo = ft_atoi(argv[1]);
-	program.death_ph = 0;
-	program.eaten_ph = 0;
-	if (argc > 5)
-		program.nb_meals = ft_atoi(argv[5]);
-	else
-		program.nb_meals = -1;
-	if (pthread_mutex_init(&program.mwrite, NULL) != 0)
-		return (-1);
-	if (pthread_mutex_init(&program.ewrite, NULL) != 0)
+	if (init_program(argc, argv, &program) < 0)
 		return (-1);
 	philos = (t_philo *)malloc(sizeof(t_philo) * program.nb_philo);
 	init_philo(philos, argv, ini.tv_sec * 1000 + ini.tv_usec / 1000, &program);
+	/*if (pthread_create(&thread, NULL, supervisor, &philos) != 0)
+	{
+		printf("Error creating the thread");
+		return (-1);
+	}*/
 	i = 0;
 	while (i < program.nb_philo)
 	{
 		if (pthread_create(&philos[i].thread, NULL, routine, &philos[i]) != 0)
-		{
-			printf("Error creating the thread");
-			return (-1);
-		}
+			return (msg_error("Error creating the thread"));
 		i++;
 	}
 	while (1)
 	{
-		if (philo_death(philos, &program) == 1)
+		if ((program.nb_meals > 0 && check_eaten(philos, &program, 0) == 1)
+			|| (philo_death(philos, &program) == 1))
+		{
+			end_program(philos, &program);
+			//system("leaks -q philo");
+			//printf("FIN");
+			return (0);
+		}
+		/*if (philo_death(philos, &program) == 1)
 		{
 			//system("leaks -q philo");
 			printf("MUERTE");
 			return (0);
-		}
-		if (program.nb_meals > 0 && check_eaten(philos, &program, 0) == 1)
-		{
-			end_program(philos, &program);
-			//system("leaks -q philo");
-			printf("FIN COMIDAS");
-			return (0);
-		}
+		}*/
 	}
 }
 

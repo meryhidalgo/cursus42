@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:36:08 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/03/26 16:16:35 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:00:36 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	end_program(t_philo *philos, t_program *program)
 		pthread_detach(philos[i].thread);
 		pthread_mutex_destroy(philos[i].r_fork);
 		pthread_mutex_destroy(&philos[i].monitor);
+		pthread_mutex_destroy(&philos[i].mstatus);
 		i++;
 	}
 	pthread_mutex_destroy(&program->mwrite);
