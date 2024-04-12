@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:49:04 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/03/27 12:58:51 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:25:51 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,28 @@ int	checker(int argc, char **argv)
 	return (0);
 }
 
-int	check_eaten(t_philo *philos, t_program *program, int p)
+int	check_eaten(t_philo *philos, t_program *program)
 {
 	int	i;
-	int	meals;
+	int	finished;
 
 	i = 0;
+	finished = 0;
+	if (philos->num_times_to_eat < 0)
+		return (0);
 	while (i < program->nb_philo)
 	{
-		pthread_mutex_lock(&philos[i].monitor);
-		meals = philos[i].nb_meals;
-		pthread_mutex_unlock(&philos[i].monitor);
-		if (meals >= program->nb_meals)
-			p++;
+		pthread_mutex_lock(&philos[i].mstatus);
+		if (philos[i].meals_eaten >= philos->num_times_to_eat)
+			finished++;
+		pthread_mutex_unlock(&philos[i].mstatus);
 		i++;
 	}
-	if (p == program->nb_philo)
+	if (finished == program->nb_philo)
 	{
-		pthread_mutex_lock(&program->ewrite);
-		program->eaten_ph = 1;
-		pthread_mutex_unlock(&program->ewrite);
+		pthread_mutex_lock(&philos[i].dstatus);
+		*philos->dead = 1;
+		pthread_mutex_unlock(&philos[i].dstatus);
 		return (1);
 	}
 	return (0);
@@ -79,11 +81,19 @@ int	check_death(t_philo *p)
 
 	gettimeofday(&t, 0);
 	now = t.tv_sec * 1000 + t.tv_usec / 1000;
-	pthread_mutex_lock(&p->monitor);
+	pthread_mutex_lock(&p->last); //puede que sirva bloquear mstatus
 	last = p->last_eating;
-	if (now - last > p->time_to_die)// && status != 0)
-		return (pthread_mutex_unlock(&p->monitor), 1);
-	pthread_mutex_unlock(&p->monitor);
+	pthread_mutex_lock(&p->stat);
+	if (now - last > p->time_to_die && p->status != 0)
+	{
+		pthread_mutex_lock(&p->dstatus);
+		*p->dead = 1;
+		pthread_mutex_unlock(&p->dstatus);
+		pthread_mutex_unlock(&p->stat);
+		return (pthread_mutex_unlock(&p->last), 1);
+	}
+	pthread_mutex_unlock(&p->last);
+	pthread_mutex_unlock(&p->stat);
 	return (0);
 }
 
@@ -101,9 +111,9 @@ int	philo_death(t_philo *philos, t_program *program)
 		now = t.tv_sec * 1000 + t.tv_usec / 1000;
 		if (check_death(&philos[i]) == 1)
 		{
-			pthread_mutex_lock(&program->mwrite);
-			program->death_ph = 1;
-			pthread_mutex_unlock(&program->mwrite);
+			pthread_mutex_lock(&philos[i].dstatus);
+			*philos->dead = 1;
+			pthread_mutex_unlock(&philos[i].dstatus);
 			id = philos[i].id;
 			printf("%d %i died\n", (int)(ft_time() - philos[i].ini), id);
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:36:08 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/03/27 13:00:36 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:23:43 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,22 @@ int	ft_atoi(const char *str)
 	return (sol * neg);
 }
 
-int	end_program(t_philo *philos, t_program *program)
+int	end_program(t_philo *philos, t_program program)
 {
 	int	i;
 
 	i = 0;
-	while (i < program->nb_philo)
+	while (i < program.nb_philo)
 	{
-		pthread_detach(philos[i].thread);
+		//pthread_detach(philos[i].thread);
 		pthread_mutex_destroy(philos[i].r_fork);
-		pthread_mutex_destroy(&philos[i].monitor);
+		pthread_mutex_destroy(&philos[i].dstatus);
 		pthread_mutex_destroy(&philos[i].mstatus);
+		pthread_mutex_destroy(&philos[i].last);
+		pthread_mutex_destroy(&philos[i].stat);
 		i++;
 	}
-	pthread_mutex_destroy(&program->mwrite);
+	//pthread_mutex_destroy(&program->mwrite);
 	free(philos);
 	return (1);
 }
