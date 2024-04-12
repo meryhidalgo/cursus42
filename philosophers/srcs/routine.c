@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:37:51 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/04/12 13:34:46 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/04/12 14:00:36 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,33 @@ void	display_message(int action, t_philo *philo, long int ini, int id)
 	}
 }
 
-void	eat(t_philo *p) //cuadran lineas sin comentarios
+void	first_time(t_philo *p)
+{
+	if (p->id % 2 == 0)
+		pthread_mutex_lock(p->r_fork);
+	else
+		pthread_mutex_lock(&p->l_fork);
+	display_message(FORK, p, p->ini, p->id);
+	if (p->id % 2 == 0)
+		pthread_mutex_lock(&p->l_fork);
+	else
+		pthread_mutex_lock(p->r_fork);
+	display_message(FORK, p, p->ini, p->id);
+}
+
+void	eat(t_philo *p)
 {
 	struct timeval	e;
 
-	pthread_mutex_lock(p->r_fork);
-	display_message(FORK, p, p->ini, p->id);
-	pthread_mutex_lock(&p->l_fork);
-	display_message(FORK, p, p->ini, p->id);
+	if (p->status == -1)
+		first_time(p);
+	else
+	{
+		pthread_mutex_lock(p->r_fork);
+		display_message(FORK, p, p->ini, p->id);
+		pthread_mutex_lock(&p->l_fork);
+		display_message(FORK, p, p->ini, p->id);
+	}
 	pthread_mutex_lock(&p->mstatus);
 	p->meals_eaten++;
 	pthread_mutex_unlock(&p->mstatus);
@@ -52,7 +71,6 @@ void	eat(t_philo *p) //cuadran lineas sin comentarios
 	pthread_mutex_unlock(p->r_fork);
 	pthread_mutex_unlock(&p->l_fork);
 }
-
 
 void	fsleep(t_philo *p)
 {
@@ -70,4 +88,3 @@ void	think(t_philo *p)
 	pthread_mutex_unlock(&p->stat);
 	display_message(THINK, p, p->ini, p->id);
 }
-

@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:49:04 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/04/12 13:12:17 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/04/12 14:11:20 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	checker(int argc, char **argv)
 		return (msg_error("El time_to_eat es inválido"));
 	else if (ft_atoi(argv[4]) < 0 || arg_content(argv[4]) < 0)
 		return (msg_error("El time_to_sleep es inválido"));
-	else if (argc > 5 && (ft_atoi(argv[5]) < 0 || arg_content(argv[5]) < 0))
+	else if (argc > 5 && (ft_atoi(argv[5]) < 1 || arg_content(argv[5]) < 0))
 		return (msg_error("El nº de comidas es inválido, debe ser mayor a 0."));
 	return (0);
 }

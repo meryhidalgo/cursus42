@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:21:23 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/04/12 13:46:13 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/04/12 14:15:41 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	*routine(void *philo)
 		pthread_mutex_unlock(p->r_fork);
 		return (philo);
 	}
-	if (p->id % 2 == 0)
-		ft_usleep(1);
 	while (ft_continue(p) == 0)
 	{
 		eat(p);
