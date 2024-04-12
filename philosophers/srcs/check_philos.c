@@ -6,7 +6,7 @@
 /*   By: mcarazo- <mcarazo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:49:04 by mcarazo-          #+#    #+#             */
-/*   Updated: 2024/04/12 12:25:51 by mcarazo-         ###   ########.fr       */
+/*   Updated: 2024/04/12 13:12:17 by mcarazo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ int	check_eaten(t_philo *philos, t_program *program)
 	}
 	if (finished == program->nb_philo)
 	{
-		pthread_mutex_lock(&philos[i].dstatus);
+		pthread_mutex_lock(philos[0].dstatus);
 		*philos->dead = 1;
-		pthread_mutex_unlock(&philos[i].dstatus);
+		pthread_mutex_unlock(philos[0].dstatus);
 		return (1);
 	}
 	return (0);
@@ -76,19 +76,16 @@ int	check_death(t_philo *p)
 {
 	struct timeval	t;
 	long int		now;
-	long int		last;
-	//int				status;
 
 	gettimeofday(&t, 0);
 	now = t.tv_sec * 1000 + t.tv_usec / 1000;
-	pthread_mutex_lock(&p->last); //puede que sirva bloquear mstatus
-	last = p->last_eating;
+	pthread_mutex_lock(&p->last);
 	pthread_mutex_lock(&p->stat);
-	if (now - last > p->time_to_die && p->status != 0)
+	if (now - p->last_eating > p->time_to_die && p->status != 0)
 	{
-		pthread_mutex_lock(&p->dstatus);
+		pthread_mutex_lock(p->dstatus);
 		*p->dead = 1;
-		pthread_mutex_unlock(&p->dstatus);
+		pthread_mutex_unlock(p->dstatus);
 		pthread_mutex_unlock(&p->stat);
 		return (pthread_mutex_unlock(&p->last), 1);
 	}
@@ -111,9 +108,6 @@ int	philo_death(t_philo *philos, t_program *program)
 		now = t.tv_sec * 1000 + t.tv_usec / 1000;
 		if (check_death(&philos[i]) == 1)
 		{
-			pthread_mutex_lock(&philos[i].dstatus);
-			*philos->dead = 1;
-			pthread_mutex_unlock(&philos[i].dstatus);
 			id = philos[i].id;
 			printf("%d %i died\n", (int)(ft_time() - philos[i].ini), id);
 			return (1);
@@ -122,5 +116,3 @@ int	philo_death(t_philo *philos, t_program *program)
 	}
 	return (0);
 }
-
-//impares retardo de 5 microsegundos despues de comer
