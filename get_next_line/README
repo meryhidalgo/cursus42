@@ -1,6 +1,5 @@
 # Objetivos
-Este proyecto no solo te permitirá añadir una función bastante práctica a tu colección; 
-también te hará aprender el increíble concepto de las variables estáticas en C.
+El objetivo de este proyecto es: programar una función que devuelva una línea leída de un file descriptor.
 
 • Llamar a tu función get_next_line de manera repetida (por ejemplo, usando un bucle) 
 te permitirá leer el contenido del archivo hacia el que apunta el file descriptor, línea a línea, hasta el final.
