@@ -1,0 +1,6 @@
+Este proyecto es un pequeño juego en 2D. 
+Está diseñado para hacerte trabajar con texturas y sprites y algunos otros elementos básicos de jugabilidad.
+
+Librería gráfica MiniLibX.
+
+Tu programa debe aceptar como primer argumento un archivo con la descripción del mapa de extensión .ber.
