@@ -1,0 +1,12 @@
+Resumen: Este proyecto consiste en programar una librería en C.
+Tu librería tendrá un montón de funciones de propósito general en las que se apoyarán tus programas.
+• isalpha • isdigit • isalnum • isascii • isprint • strlen • memset • bzero
+• memcpy • memmove • strlcpy • strlcat
+• toupper • tolower • strchr • strrchr • strncmp • memchr • memcmp • strnstr • atoi
+
+Para implementar estas otras dos funciones, tendrás que utilizar malloc():
+• calloc • strdup
+
+Parte bonus: 
+
+Trabajo con listas
