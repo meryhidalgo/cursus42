@@ -5,3 +5,10 @@ El objetivo de este proyecto es: programar una función que devuelva una línea 
 te permitirá leer el contenido del archivo hacia el que apunta el file descriptor, línea a línea, hasta el final.
 • Tu función deberá devolver la línea que se acaba de leer.
 Si no hay nada más que leer o si ha ocurrido un error, deberá devolver NULL.
+
+Aquí tienes los requisitos de la parte bonus:
+• Desarrolla get_next_line() con una sola variable estática.
+• Tu get_next_line tiene que ser capaz de gestionar múltiples fd a la vez. 
+Es decir, si tienes tres fd disponibles para lectura (por ejemplo: 3, 4 y 5), 
+debes poder utilizar get_next_line una vez sobre el fd 3, otra vez sobre el fd 4, y otra vez sobre el fd 5 de forma alterna. 
+Y sí, no debe perder el hilo de lectura de cada uno de los fd.
