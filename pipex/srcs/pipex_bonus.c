@@ -84,14 +84,14 @@ void	pipex(char *cmd, char **envp)
 	else if (pid == 0)
 	{
 		close (pipefd[0]);
-		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+		if (dup2(pipefd[1], STDOUT_FILENO) == -1) # Lo que se escriba en STDOUT se escribe en pipe
 			error_message("Error in dup2", 0);
 		exec_process(cmd, envp);
 	}
 	else
 	{
 		close (pipefd[1]);
-		if (dup2(pipefd[0], STDIN_FILENO) == -1)
+		if (dup2(pipefd[0], STDIN_FILENO) == -1) # Lo que se lea desde STDIN se lee desde pipe
 			error_message("Error in dup2", 0);
 	}
 }
