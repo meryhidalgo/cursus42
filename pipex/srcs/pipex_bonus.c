@@ -67,6 +67,10 @@ void	exec_process(char *cmd, char **envp)
 	}
 }
 
+# El proceso hijo ejecuta el comando cmd y escribe su salida estándar en el pipe. 
+# El proceso padre lee esta salida desde el pipe y hace con ella con que quiera. 
+# pipe [0] es lectura y pipe [1] es escritura
+
 void	pipex(char *cmd, char **envp)
 {
 	pid_t	pid;
